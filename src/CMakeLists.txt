@@ -1,4 +1,4 @@
-set(src main.c)
+set(src main.c queue.c)
 
 add_executable(${PROJECT_NAME} ${src})
 
