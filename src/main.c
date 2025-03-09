@@ -20,6 +20,8 @@ void test_queue() {
 }
 
 int32_t main(int32_t argc, char *argv[]) {
+#ifdef RUN_TESTS
     test_queue();
+#endif
     return 0;
 }
