@@ -22,9 +22,14 @@ void test_queue() {
     }
 }
 
+void test_callback(NetworkLayerPacket *pkt) {
+    printf("Received pkt with name: %s\n", packet_name(pkt));
+}
+
 void test_network_layer() {
     printf("Create layer\n");
     NetworkLayer *l1 = create_layer();
+    register_on_packet_received_callback(l1, test_callback);
 
     printf("Start listen for layer\n");
     listen(l1);
@@ -32,7 +37,9 @@ void test_network_layer() {
     printf("Send packets\n");
     const int32_t PACKETS_TO_SEND = 100;
     for (int32_t i = 0; i < PACKETS_TO_SEND; ++i) {
-        NetworkLayerPacket *packet = NULL;
+        char packet_name[64];
+        sprintf(packet_name, "Packet name: %d", i);
+        NetworkLayerPacket *packet = create_packet(packet_name);
         send_packet(l1, packet);
     }
     printf("Packets are sent\n");
