@@ -1,8 +1,10 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "queue.h"
 #include "network_layer.h"
+#include "queue.h"
+
+#define RUN_TESTS
 
 void test_queue() {
     queue *q = create_queue();
@@ -21,20 +23,27 @@ void test_queue() {
 }
 
 void test_network_layer() {
-    NetworkLayer * l1 = create_layer();
+    printf("Create layer\n");
+    NetworkLayer *l1 = create_layer();
 
+    printf("Start listen for layer\n");
     listen(l1);
-    
+
+    printf("Send packets\n");
     const int32_t PACKETS_TO_SEND = 100;
     for (int32_t i = 0; i < PACKETS_TO_SEND; ++i) {
-        NetworkLayerPacket * packet = NULL;
+        NetworkLayerPacket *packet = NULL;
         send_packet(l1, packet);
     }
+    printf("Packets are sent\n");
 
     if (is_listen(l1)) {
+        printf("Layer is listening. Stop it\n");
         stop_listen(l1);
+        printf("Listening stoped\n");
     }
 
+    printf("Release layer\n");
     release_layer(l1);
 }
 
